@@ -16,10 +16,15 @@ wails.log
 
 # Runtime artifacts
 *.exe
+*.zip
 snapshots/
 storage/
 .qdrant-initialized
 index_meta.json
+tmp_*.go
+
+# Reference projects (not part of this repo)
+LEANN-main/
 
 # IDE
 .vscode/
