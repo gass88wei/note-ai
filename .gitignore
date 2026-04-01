@@ -1,0 +1,39 @@
+# Go
+/go/bin/
+/go/pkg/mod/
+
+# Node
+frontend/node_modules/
+frontend/package-lock.json
+frontend/yarn.lock
+
+# Wails
+build/
+wails.log
+
+# Application data
+.note-ai/
+
+# Runtime artifacts
+*.exe
+snapshots/
+storage/
+.qdrant-initialized
+index_meta.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+.ruff_cache/
+__pycache__/
+
+# Logs
+*.log
