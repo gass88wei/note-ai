@@ -134,3 +134,18 @@ func (a *App) TestLLMConnection() *TestConnectionResult {
 func (a *App) GetAppDir() string {
 	return a.handler.GetAppDir()
 }
+
+func (a *App) ImportFolder(folderPath string) (*ImportResult, error) {
+	return a.handler.ImportFolder(folderPath)
+}
+
+func (a *App) SelectFolder() (*ImportResult, error) {
+	folderPath, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{Title: "选择文件夹"})
+	if err != nil {
+		return nil, err
+	}
+	if folderPath == "" {
+		return nil, nil
+	}
+	return a.handler.ImportFolder(folderPath)
+}

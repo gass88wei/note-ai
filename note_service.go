@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"note-ai/internal/parser"
+	"note-ai/internal/scanner"
 )
 
 // NoteService 笔记业务逻辑
@@ -21,12 +24,12 @@ func NewNoteService(db *Database, search *SearchService, llm *LLMClient) *NoteSe
 	}
 }
 
-// GetAllNotes 获取所有笔记
+// GetAllNotes 获取所有笔�?
 func (s *NoteService) GetAllNotes() ([]Note, error) {
 	return s.db.GetAllNotes()
 }
 
-// CreateNote 创建笔记并增量更新索引
+// CreateNote 创建笔记并增量更新索�?
 func (s *NoteService) CreateNote(title, content, category, tags string) (*Note, error) {
 	now := time.Now().Format("2006-01-02 15:04:05")
 	note := &Note{
@@ -43,13 +46,13 @@ func (s *NoteService) CreateNote(title, content, category, tags string) (*Note, 
 		return nil, err
 	}
 
-	// 增量索引：直接追加
+	// 增量索引：直接追�?
 	go s.search.IndexNoteAdded(note)
 
 	return note, nil
 }
 
-// UpdateNote 更新笔记并增量更新索引
+// UpdateNote 更新笔记并增量更新索�?
 func (s *NoteService) UpdateNote(id int64, title, content, category, tags string) (*Note, error) {
 	note, err := s.db.GetNoteByID(id)
 	if err != nil {
@@ -66,7 +69,7 @@ func (s *NoteService) UpdateNote(id int64, title, content, category, tags string
 		return nil, err
 	}
 
-	// 增量索引：替换索引条目
+	// 增量索引：替换索引条�?
 	go s.search.IndexNoteUpdated(note)
 
 	return note, nil
@@ -80,7 +83,7 @@ func (s *NoteService) DeleteNote(id int64) error {
 	return s.db.DeleteNote(id)
 }
 
-// GetNoteCategories 获取所有分类
+// GetNoteCategories 获取所有分�?
 func (s *NoteService) GetNoteCategories() ([]string, error) {
 	return s.db.GetNoteCategories()
 }
@@ -127,7 +130,7 @@ func (s *NoteService) AskQuestion(question string) (*QuestionResult, error) {
 	}, nil
 }
 
-// ChatWithAI 完整的 AI 对话流程
+// ChatWithAI 完整�?AI 对话流程
 func (s *NoteService) ChatWithAI(userMessage string) ([]ChatMessage, error) {
 	userMsg := &ChatMessage{
 		Role:      "user",
@@ -183,4 +186,21 @@ func (s *NoteService) ClearChatHistory() error {
 // DeleteChatMessage 删除单条消息
 func (s *NoteService) DeleteChatMessage(id int64) error {
 	return s.db.DeleteChatMessage(id)
+}
+
+func (s *NoteService) ImportFolder(folderPath string) (int, error) {
+	files, err := scanner.ScanFolder(folderPath)
+	if err != nil {
+		return 0, err
+	}
+	imported := 0
+	for _, f := range files {
+		title, content, err := parser.ParseFile(f.Path)
+		if err != nil {
+			continue
+		}
+		s.CreateNote(title, content, "导入", "")
+		imported++
+	}
+	return imported, nil
 }
