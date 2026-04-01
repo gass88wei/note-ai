@@ -11,6 +11,9 @@
 - **增量更新**：SHA256 hash 检测变更，只处理变化的笔记
 - **句子提取**：搜索结果只提取与查询最相关的句子，节省 LLM token
 
+- <img width="1477" height="980" alt="image" src="https://github.com/user-attachments/assets/aeadbe78-4bb9-444f-bf20-3934c6a008a9" />
+
+
 ## 技术架构
 
 ```
