@@ -76,6 +76,19 @@ func (h *APIHandler) GetNoteCategories() ([]string, error) {
 	return h.service.GetNoteCategories()
 }
 
+type ImportResult struct {
+	Imported int    `json:"imported"`
+	Message  string `json:"message"`
+}
+
+func (h *APIHandler) ImportFolder(folderPath string) (*ImportResult, error) {
+	count, err := h.service.ImportFolder(folderPath)
+	if err != nil {
+		return nil, err
+	}
+	return &ImportResult{Imported: count, Message: fmt.Sprintf("导入 %d 个文件", count)}, nil
+}
+
 // ============ AI 对话 API ============
 
 type QuestionResponse struct {
@@ -208,17 +221,4 @@ func (h *APIHandler) TestLLMConnection() *TestConnectionResult {
 
 func (h *APIHandler) GetAppDir() string {
 	return h.db.GetAppDir()
-}
-
-type ImportResult struct {
-	Imported int    `json:"imported"`
-	Message  string `json:"message"`
-}
-
-func (h *APIHandler) ImportFolder(folderPath string) (*ImportResult, error) {
-	count, err := h.service.ImportFolder(folderPath)
-	if err != nil {
-		return nil, err
-	}
-	return &ImportResult{Imported: count, Message: fmt.Sprintf("导入 %d 个文件", count)}, nil
 }

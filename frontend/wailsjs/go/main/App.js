@@ -46,6 +46,10 @@ export function GetSetting(arg1) {
   return window['go']['main']['App']['GetSetting'](arg1);
 }
 
+export function ImportFolder(arg1) {
+  return window['go']['main']['App']['ImportFolder'](arg1);
+}
+
 export function OnBeforeClose(arg1) {
   return window['go']['main']['App']['OnBeforeClose'](arg1);
 }
@@ -60,6 +64,10 @@ export function RebuildIndex() {
 
 export function RebuildIndexIfChanged() {
   return window['go']['main']['App']['RebuildIndexIfChanged']();
+}
+
+export function SelectFolder() {
+  return window['go']['main']['App']['SelectFolder']();
 }
 
 export function SendChatMessage(arg1) {

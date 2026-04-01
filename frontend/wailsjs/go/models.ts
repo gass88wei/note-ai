@@ -38,6 +38,20 @@ export namespace main {
 	        this.note_ids = source["note_ids"];
 	    }
 	}
+	export class ImportResult {
+	    imported: number;
+	    message: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new ImportResult(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.imported = source["imported"];
+	        this.message = source["message"];
+	    }
+	}
 	export class LeannStatus {
 	    available: boolean;
 	    message: string;

@@ -25,6 +25,8 @@ export function GetNoteCategories():Promise<Array<string>>;
 
 export function GetSetting(arg1:string):Promise<string>;
 
+export function ImportFolder(arg1:string):Promise<main.ImportResult>;
+
 export function OnBeforeClose(arg1:context.Context):Promise<boolean>;
 
 export function OnStartup(arg1:context.Context):Promise<void>;
@@ -32,6 +34,8 @@ export function OnStartup(arg1:context.Context):Promise<void>;
 export function RebuildIndex():Promise<void>;
 
 export function RebuildIndexIfChanged():Promise<boolean>;
+
+export function SelectFolder():Promise<main.ImportResult>;
 
 export function SendChatMessage(arg1:string):Promise<main.ChatResponse>;
 

@@ -81,6 +81,23 @@ func (a *App) GetNoteCategories() ([]string, error) {
 	return a.handler.GetNoteCategories()
 }
 
+func (a *App) ImportFolder(folderPath string) (*ImportResult, error) {
+	return a.handler.ImportFolder(folderPath)
+}
+
+func (a *App) SelectFolder() (*ImportResult, error) {
+	folderPath, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
+		Title: "选择要导入的文件夹",
+	})
+	if err != nil {
+		return nil, err
+	}
+	if folderPath == "" {
+		return nil, nil
+	}
+	return a.handler.ImportFolder(folderPath)
+}
+
 // ============ AI 对话相关方法 (暴露给前端) ============
 
 func (a *App) GetChatHistory() ([]ChatMessage, error) {
@@ -133,19 +150,4 @@ func (a *App) TestLLMConnection() *TestConnectionResult {
 
 func (a *App) GetAppDir() string {
 	return a.handler.GetAppDir()
-}
-
-func (a *App) ImportFolder(folderPath string) (*ImportResult, error) {
-	return a.handler.ImportFolder(folderPath)
-}
-
-func (a *App) SelectFolder() (*ImportResult, error) {
-	folderPath, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{Title: "选择文件夹"})
-	if err != nil {
-		return nil, err
-	}
-	if folderPath == "" {
-		return nil, nil
-	}
-	return a.handler.ImportFolder(folderPath)
 }
